@@ -29,6 +29,7 @@ import {
   IconChevronDown,
 } from '@tabler/icons-react';
 import { ConnectKitButton } from 'connectkit';
+import { ColorSchemeToggle } from '../ColorSchemeToggle/ColorSchemeToggle';
 
 const useStyles = createStyles((theme) => ({
   link: {
@@ -210,6 +211,7 @@ export function HeaderMegaMenu() {
           </Group>
 
           <Group className={classes.hiddenMobile}>
+            <ColorSchemeToggle />
             <ConnectKitButton />
           </Group>
 
