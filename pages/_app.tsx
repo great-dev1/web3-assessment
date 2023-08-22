@@ -6,6 +6,9 @@ import { MantineProvider, ColorScheme, ColorSchemeProvider } from '@mantine/core
 import { Notifications } from '@mantine/notifications';
 import { WagmiConfig, createConfig } from 'wagmi';
 import { ConnectKitProvider, getDefaultConfig } from 'connectkit';
+import { polygonMumbai } from 'wagmi/chains';
+
+const chains = [polygonMumbai];
 
 const config = createConfig(
   getDefaultConfig({
@@ -20,6 +23,7 @@ const config = createConfig(
     appDescription: 'Your App Description',
     appUrl: 'https://family.co', // your app's url
     appIcon: 'https://family.co/logo.png', // your app's icon, no bigger than 1024x1024px (max. 1MB)
+    chains,
   })
 );
 
