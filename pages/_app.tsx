@@ -5,7 +5,7 @@ import Head from 'next/head';
 import { MantineProvider, ColorScheme, ColorSchemeProvider } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import { WagmiConfig, createConfig } from 'wagmi';
-import { ConnectKitProvider, ConnectKitButton, getDefaultConfig } from 'connectkit';
+import { ConnectKitProvider, getDefaultConfig } from 'connectkit';
 
 const config = createConfig(
   getDefaultConfig({
@@ -47,7 +47,6 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
             <ConnectKitProvider>
               <Component {...pageProps} />
               <Notifications />
-              <ConnectKitButton />
             </ConnectKitProvider>
           </WagmiConfig>
         </MantineProvider>
