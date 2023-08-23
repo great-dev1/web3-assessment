@@ -12,7 +12,7 @@ export function publicClientToProvider(publicClient: PublicClient) {
   if (transport.type === 'fallback') {
     return new providers.FallbackProvider(
       (transport.transports as ReturnType<HttpTransport>[]).map(
-        ({ value }) => new providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com/', network)
+        () => new providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com/', network)
       )
     );
   }
