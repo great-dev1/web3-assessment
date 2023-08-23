@@ -7,18 +7,17 @@ import { Notifications } from '@mantine/notifications';
 import { WagmiConfig, createConfig } from 'wagmi';
 import { ConnectKitProvider, getDefaultConfig } from 'connectkit';
 import { polygonMumbai } from 'wagmi/chains';
+import { appConfig } from '../utils/config';
 
 const chains = [polygonMumbai];
 
 const config = createConfig(
   getDefaultConfig({
     // Required API Keys
-    alchemyId: process.env.ALCHEMY_ID, // or infuraId
-    walletConnectProjectId: process.env.WALLETCONNECT_PROJECT_ID || '',
-
+    alchemyId: appConfig.alchemyID, // or infuraId
+    walletConnectProjectId: appConfig.wallectConnectProjectID,
     // Required
     appName: 'Your App Name',
-
     // Optional
     appDescription: 'Your App Description',
     appUrl: 'https://family.co', // your app's url
