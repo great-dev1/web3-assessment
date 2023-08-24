@@ -17,6 +17,7 @@ import {
   Collapse,
   ScrollArea,
   rem,
+  useMantineColorScheme,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import {
@@ -128,6 +129,9 @@ export function HeaderMegaMenu() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
   const { classes, theme } = useStyles();
+  const { colorScheme } = useMantineColorScheme();
+
+  console.log('colorScheme :>> ', colorScheme);
 
   const links = mockdata.map((item) => (
     <UnstyledButton className={classes.subLink} key={item.title}>
@@ -148,7 +152,7 @@ export function HeaderMegaMenu() {
   ));
 
   return (
-    <Box pb={120}>
+    <Box>
       <Header height={60} px="md">
         <Group position="apart" sx={{ height: '100%' }}>
           {/* <MantineLogo size={30} /> */}
@@ -212,7 +216,7 @@ export function HeaderMegaMenu() {
 
           <Group className={classes.hiddenMobile}>
             <ColorSchemeToggle />
-            <ConnectKitButton />
+            <ConnectKitButton mode={colorScheme} />
           </Group>
 
           <Burger opened={drawerOpened} onClick={toggleDrawer} className={classes.hiddenDesktop} />

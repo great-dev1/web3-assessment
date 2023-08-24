@@ -1,5 +1,10 @@
+import { useState, useEffect } from 'react';
 import { useAccount, useContractRead, useContractReads, useBalance, useBlockNumber } from 'wagmi';
+import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
 import { appConfig } from '../utils/config';
+
+dayjs.extend(duration);
 
 const presaleContract = {
   address: appConfig.presaleContractAddress,
@@ -25,6 +30,13 @@ const contracts = [
   },
 ];
 
+type TimeObject = {
+  days: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
+};
+
 export function usePresale() {
   // account states
   const { address, isConnected } = useAccount();
@@ -44,11 +56,12 @@ export function usePresale() {
     watch: true,
   });
   const { data: viewData, isFetchedAfterMount } = useContractReads({ contracts, cacheTime: 0 });
+  const [remainingTime, setRemainingTime] = useState<TimeObject | undefined>();
 
-  return {
+  const appData = {
     currentStage: Number(viewData?.[0].result),
-    currentStageAvailableAmount: Number(viewData?.[1].result),
-    currentStagePrice: Number(viewData?.[2].result),
+    currentStageAvailableAmount: viewData?.[1].result as bigint,
+    currentStagePrice: viewData?.[2].result as bigint,
     currentStageStartBlock: Number(viewData?.[3].result),
     balance: balanceData?.formatted,
     balanceSymbol: balanceData?.symbol,
@@ -58,6 +71,27 @@ export function usePresale() {
     currentBlockNumber: Number(currentBlockNumber),
     address,
     isConnected,
+    remainingTime,
     isFetchedAfterMount,
+  };
+
+  useEffect(() => {
+    if (currentBlockNumber) {
+      const endBlockNumber = Number(appData.currentStageStartBlock) + 43200;
+      const blockDelta = endBlockNumber - Number(currentBlockNumber);
+      const secondDelta = blockDelta * 2.3;
+      const timeDelta = dayjs.duration(secondDelta, 'seconds');
+      const timeObject = {
+        days: timeDelta.days(),
+        hours: timeDelta.hours(),
+        minutes: timeDelta.minutes(),
+        seconds: timeDelta.seconds(),
+      };
+      setRemainingTime(timeObject);
+    }
+  }, [currentBlockNumber, appData.currentStageStartBlock]);
+
+  return {
+    ...appData,
   };
 }

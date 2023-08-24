@@ -8,5 +8,6 @@
   "vs-code-prettier-eslint.prettierLast": "false",
   "[typescriptreact]": {
     "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
-  } // set as "true" to run 'prettier' last not first
+  },
+  "cSpell.words": ["Presale"] // set as "true" to run 'prettier' last not first
 }

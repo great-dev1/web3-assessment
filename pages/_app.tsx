@@ -15,7 +15,7 @@ const config = createConfig(
   getDefaultConfig({
     // Required API Keys
     alchemyId: appConfig.alchemyID, // or infuraId
-    walletConnectProjectId: appConfig.wallectConnectProjectID,
+    walletConnectProjectId: appConfig.walletConnectProjectID,
     // Required
     appName: 'Your App Name',
     // Optional
