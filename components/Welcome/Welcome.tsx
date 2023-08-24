@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Title, Text, TextInput, Container, Button } from '@mantine/core';
 import { utils } from 'ethers';
 import { usePresale } from '../../hooks/usePresale';
@@ -23,12 +24,20 @@ export function Welcome() {
     setTokenAmount,
   } = usePresale();
 
+  const [tokenAmountStr, setTokenAmountStr] = useState<string>('');
   const handleSale = () => {
     tokenSale?.();
   };
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTokenAmount(BigInt(e.target.value));
+    const value = e.target.value.trim().replace(/\s+/g, '');
+    if (value === '') {
+      setTokenAmount(BigInt(0));
+    } else {
+      const tokenAmountBigInt = utils.parseUnits(value).toBigInt();
+      setTokenAmount(tokenAmountBigInt);
+    }
+    setTokenAmountStr(value);
   };
 
   if (!isFetchedAfterMount) return null;
@@ -64,11 +73,12 @@ export function Welcome() {
           label="Token amount to buy"
           withAsterisk
           type="number"
-          value={Number(tokenAmount)}
+          value={tokenAmountStr}
           onChange={handleOnChange}
           onFocus={(e) => e.target.select()}
         />
-        price: {utils.formatUnits(tokenAmount * currentStagePrice).toString()} matic
+        price: {utils.formatUnits((tokenAmount * currentStagePrice) / BigInt(1e18)).toString()}{' '}
+        matic
         <br />
         <Button
           variant="gradient"
