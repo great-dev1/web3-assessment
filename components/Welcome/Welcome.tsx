@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Title, Text, TextInput, Container, Button } from '@mantine/core';
 import { utils } from 'ethers';
 import { usePresale } from '../../hooks/usePresale';
@@ -17,9 +16,16 @@ export function Welcome() {
     currentBlockNumber,
     remainingTime,
     isFetchedAfterMount,
+    isSaleLoading,
+    isSaleSuccess,
+    tokenSale,
+    tokenAmount,
+    setTokenAmount,
   } = usePresale();
 
-  const [tokenAmount, setTokenAmount] = useState<bigint>(BigInt(0));
+  const handleSale = () => {
+    tokenSale?.();
+  };
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTokenAmount(BigInt(e.target.value));
@@ -40,7 +46,7 @@ export function Welcome() {
           currentStageAvailableAmount : {utils.formatUnits(currentStageAvailableAmount)}
           {tokenInfo?.symbol}
           <br />
-          currentStagePrice : {utils.formatUnits(currentStagePrice)} {tokenInfo?.symbol}
+          currentStagePrice : {utils.formatUnits(currentStagePrice, 18)} {balanceSymbol}
           <br />
           currentStageBlockStart : {currentStageStartBlock}
           <br />
@@ -64,9 +70,15 @@ export function Welcome() {
         />
         price: {utils.formatUnits(tokenAmount * currentStagePrice).toString()} matic
         <br />
-        <Button variant="gradient" gradient={{ from: 'teal', to: 'blue', deg: 60 }}>
+        <Button
+          variant="gradient"
+          gradient={{ from: 'teal', to: 'blue', deg: 60 }}
+          onClick={handleSale}
+        >
           Teal blue
         </Button>
+        {isSaleLoading && 'Transaction pending...'}
+        {isSaleSuccess && 'Transaction success'}
       </Container>
     </>
   );

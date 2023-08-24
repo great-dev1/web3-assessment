@@ -1,5 +1,13 @@
 import { useState, useEffect } from 'react';
-import { useAccount, useContractRead, useContractReads, useBalance, useBlockNumber } from 'wagmi';
+import {
+  useAccount,
+  useContractRead,
+  useContractReads,
+  useBalance,
+  useBlockNumber,
+  useContractWrite,
+  usePrepareContractWrite,
+} from 'wagmi';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import { appConfig } from '../utils/config';
@@ -38,6 +46,9 @@ type TimeObject = {
 };
 
 export function usePresale() {
+  const [remainingTime, setRemainingTime] = useState<TimeObject | undefined>();
+  const [tokenAmount, setTokenAmount] = useState<bigint>(BigInt(0));
+
   // account states
   const { address, isConnected } = useAccount();
   const { data: soldAmount } = useContractRead({
@@ -49,14 +60,31 @@ export function usePresale() {
   const { data: tokenBalanceData } = useBalance({
     address,
     token: appConfig.tokenContractAddress,
+    watch: true,
   });
   // chain and contract states
   const { data: currentBlockNumber } = useBlockNumber({
     staleTime: 10_000,
     watch: true,
   });
-  const { data: viewData, isFetchedAfterMount } = useContractReads({ contracts, cacheTime: 0 });
-  const [remainingTime, setRemainingTime] = useState<TimeObject | undefined>();
+  const { data: viewData, isFetchedAfterMount } = useContractReads({
+    contracts,
+    cacheTime: 0,
+    watch: true,
+  });
+  const currentStagePrice: bigint = (viewData?.[2].result || BigInt(0)) as bigint;
+  const { config } = usePrepareContractWrite({
+    ...presaleContract,
+    functionName: 'tokenSale',
+    args: [tokenAmount],
+    value: (tokenAmount * currentStagePrice) / BigInt(1e18),
+  });
+  const {
+    data: saleData,
+    isLoading: isSaleLoading,
+    isSuccess: isSaleSuccess,
+    write: tokenSale,
+  } = useContractWrite(config);
 
   const appData = {
     currentStage: Number(viewData?.[0].result),
@@ -73,6 +101,12 @@ export function usePresale() {
     isConnected,
     remainingTime,
     isFetchedAfterMount,
+    saleData,
+    isSaleLoading,
+    isSaleSuccess,
+    tokenSale,
+    tokenAmount,
+    setTokenAmount,
   };
 
   useEffect(() => {
