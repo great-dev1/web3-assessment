@@ -10,6 +10,7 @@ import {
 } from 'wagmi';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
+import { utils } from 'ethers';
 import { appConfig } from '../utils/config';
 
 dayjs.extend(duration);
@@ -17,6 +18,11 @@ dayjs.extend(duration);
 const presaleContract = {
   address: appConfig.presaleContractAddress,
   abi: appConfig.presaleContractAbi,
+};
+
+const tokenContract = {
+  address: appConfig.tokenContractAddress,
+  abi: appConfig.tokenContractAbi,
 };
 
 const contracts = [
@@ -54,7 +60,7 @@ export function usePresale() {
   const { data: soldAmount } = useContractRead({
     ...presaleContract,
     functionName: 'currentStageSoldAmount',
-    args: [address],
+    args: [address || ''],
   });
   const { data: balanceData } = useBalance({ address, watch: true, suspense: true });
   const { data: tokenBalanceData } = useBalance({
@@ -85,11 +91,17 @@ export function usePresale() {
     isSuccess: isSaleSuccess,
     write: tokenSale,
   } = useContractWrite(config);
+  const { data: totalSupply } = useContractRead({
+    ...tokenContract,
+    functionName: 'totalSupply',
+  });
+
+  // console.log('totalSupplyData', utils.formatUnits(totalSupply as bigint));
 
   const appData = {
     currentStage: Number(viewData?.[0].result),
     currentStageAvailableAmount: viewData?.[1].result as bigint,
-    currentStagePrice: viewData?.[2].result as bigint,
+    currentStagePrice: (viewData?.[2].result as bigint) || BigInt(0),
     currentStageStartBlock: Number(viewData?.[3].result),
     balance: balanceData?.formatted,
     balanceSymbol: balanceData?.symbol,
@@ -97,6 +109,7 @@ export function usePresale() {
     tokenInfo: tokenBalanceData,
     currentStageSoldAmount: Number(soldAmount),
     currentBlockNumber: Number(currentBlockNumber),
+    totalSupply: totalSupply ? utils.formatUnits(totalSupply as bigint) : '0',
     address,
     isConnected,
     remainingTime,
@@ -113,7 +126,7 @@ export function usePresale() {
     if (currentBlockNumber) {
       const endBlockNumber = Number(appData.currentStageStartBlock) + 43200;
       const blockDelta = endBlockNumber - Number(currentBlockNumber);
-      const secondDelta = blockDelta * 2.3;
+      const secondDelta = blockDelta * 2;
       const timeDelta = dayjs.duration(secondDelta, 'seconds');
       const timeObject = {
         days: timeDelta.days(),

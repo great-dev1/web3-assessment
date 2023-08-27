@@ -1,39 +1,25 @@
-# Mantine Next Template
+# Web3 React FrontEnd Develoepr Test(Preasale App)
 
-Get started with Mantine + Next with just a few button clicks.
-Click `Use this template` button at the header of repository or [follow this link](https://github.com/mantinedev/mantine-next-template/generate) and
-create new repository with `@mantine` packages. Note that you have to be logged in to GitHub to generate template.
+The project is to create a Web3 app that simulates a token presale on the Polygon Testnet. The presale has an unlimited number of stages, each with a one day duration and a token amount limit of 1,000,000 tokens. The token being sold is an ERC-20 token with symbol TSTK and 18 decimal places. The tokens can be purchased with Testnet MATIC and each wallet can buy a maximum of 10,000 tokens per stage. The price of the tokens starts at 0.00010 MATIC and increases by 0.00001 MATIC for each stage. The app displays the token amount purchased by the user and the remaining amount and price of the sale stage. There is also a countdown to the end of the stage. The app allows the user to enter the amount to buy, calculate the price to pay, and make the purchase.
 
-## Features
+## Installation and Setup Instructions
 
-This template comes with several essential features:
+Clone down this repository. You will need node and npm installed globally on your machine.
 
-- Server side rendering setup for Mantine
-- Color scheme is stored in cookie to avoid color scheme mismatch after hydration
-- Storybook with color scheme toggle
-- Jest with react testing library
-- ESLint setup with [eslint-config-mantine](https://github.com/mantinedev/eslint-config-mantine)
+### Installation:
 
-## npm scripts
+npm install, yarn
 
-### Build and dev scripts
+### To Run Test Suite:
 
-- `dev` – start dev server
-- `build` – bundle application for production
-- `export` – exports static website to `out` folder
-- `analyze` – analyzes application bundle with [@next/bundle-analyzer](https://www.npmjs.com/package/@next/bundle-analyzer)
+npm test, yarn test
 
-### Testing scripts
+### To Start Server:
 
-- `typecheck` – checks TypeScript types
-- `lint` – runs ESLint
-- `prettier:check` – checks files with Prettier
-- `jest` – runs jest tests
-- `jest:watch` – starts jest watch
-- `test` – runs `jest`, `prettier:check`, `lint` and `typecheck` scripts
+npm start, yarn start
 
-### Other scripts
+### To Visit App:
 
-- `storybook` – starts storybook dev server
-- `storybook:build` – build production storybook bundle to `storybook-static`
-- `prettier:write` – formats all files with Prettier
+localhost:3000
+
+# Explaination
