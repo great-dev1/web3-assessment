@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Container,
   Grid,
@@ -33,6 +33,10 @@ export function Presale() {
     setTokenAmount,
   } = usePresale();
   const [tokenAmountStr, setTokenAmountStr] = useState<string>('');
+  const [currentTokenBalance, setCurrentTokenBalance] = useState<number>(Number(tokenBalance));
+  useEffect(() => {
+    setCurrentTokenBalance(Number(currentTokenBalance) + Number(tokenAmountStr));
+  }, [isSaleSuccess]);
   const handleSale = () => {
     tokenSale?.();
   };
@@ -194,7 +198,7 @@ export function Presale() {
                       Balance
                     </Text>
                     {isConnected ? (
-                      <Text fz="xs">{tokenBalance} TSTK</Text>
+                      <Text fz="xs">{currentTokenBalance} TSTK</Text>
                     ) : (
                       <Text fz="xs" c="red">
                         No wallet

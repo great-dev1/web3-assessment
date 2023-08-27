@@ -97,16 +97,16 @@ export function usePresale() {
   });
 
   const appData = {
-    currentStage: Number(viewData?.[0].result),
-    currentStageAvailableAmount: viewData?.[1].result as bigint,
+    currentStage: Number(viewData?.[0].result) || 0,
+    currentStageAvailableAmount: (viewData?.[1].result as bigint) || BigInt(0),
     currentStagePrice: (viewData?.[2].result as bigint) || BigInt(0),
     currentStageStartBlock: Number(viewData?.[3].result),
     balance: balanceData?.formatted,
     balanceSymbol: balanceData?.symbol,
     tokenBalance: tokenBalanceData?.formatted,
     tokenInfo: tokenBalanceData,
-    currentStageSoldAmount: Number(soldAmount),
-    currentBlockNumber: Number(currentBlockNumber),
+    currentStageSoldAmount: Number(soldAmount) || 0,
+    currentBlockNumber: Number(currentBlockNumber) || 0,
     totalSupply: totalSupply ? utils.formatUnits(totalSupply as bigint) : '0',
     address,
     isConnected,
