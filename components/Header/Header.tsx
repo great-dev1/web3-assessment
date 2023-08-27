@@ -16,7 +16,6 @@ import {
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { ConnectKitButton } from 'connectkit';
-import { ColorSchemeToggle } from '../ColorSchemeToggle/ColorSchemeToggle';
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -87,8 +86,6 @@ export function HeaderMegaMenu() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const { classes, theme } = useStyles();
   const { colorScheme } = useMantineColorScheme();
-
-  console.log('colorScheme :>> ', colorScheme);
 
   return (
     <Box className={classes.header}>

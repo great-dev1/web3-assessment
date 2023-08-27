@@ -96,8 +96,6 @@ export function usePresale() {
     functionName: 'totalSupply',
   });
 
-  // console.log('totalSupplyData', utils.formatUnits(totalSupply as bigint));
-
   const appData = {
     currentStage: Number(viewData?.[0].result),
     currentStageAvailableAmount: viewData?.[1].result as bigint,

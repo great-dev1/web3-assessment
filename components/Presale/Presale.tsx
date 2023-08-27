@@ -21,13 +21,7 @@ export function Presale() {
     currentStage,
     currentStageAvailableAmount,
     currentStagePrice,
-    currentStageStartBlock,
-    balance,
-    balanceSymbol,
     tokenBalance,
-    tokenInfo,
-    currentStageSoldAmount,
-    currentBlockNumber,
     totalSupply,
     isConnected,
     remainingTime,
@@ -55,7 +49,6 @@ export function Presale() {
   };
 
   if (!isFetchedAfterMount) return null;
-  console.log('currentStageAvailableAmount', currentStageAvailableAmount);
   return (
     <Container my="md">
       <Grid gutter="xl">
